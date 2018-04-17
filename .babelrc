@@ -4,7 +4,7 @@
             "env",
             {
                 "modules": false,
-                "debug": true,
+                "debug": false,
                 "targets": {
                     "browsers": [
                         "Chrome >= 22",
