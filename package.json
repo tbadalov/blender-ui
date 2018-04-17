@@ -5,8 +5,8 @@
   "keywords": [
     "css"
   ],
-  "main": "dist/blender-ui.js",
-  "minified:main": "dist/blender-ui.min.js",
+  "main": "./dist/blender-ui.js",
+  "minified:main": "./dist/blender-ui.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development rollup -c",
@@ -47,5 +47,16 @@
     "Safari >= 6.2",
     "IE >= 9",
     "IE 8"
+  ],
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "blender-ui.js",
+        "blender-ui.min.js",
+        "../assets/**/*.png",
+        "*.css"
+      ]
+    }
   ]
 }
