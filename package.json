@@ -1,7 +1,7 @@
 {
   "name": "blender-ui",
-  "version": "1.0.1",
-  "description": "lightweight library that simulates window partitioning in a browser like in Blender 3D modelling software",
+  "version": "1.0.5",
+  "description": "Liteweight library that simulates window partitioning in a browser like in Blender 3D modelling software",
   "keywords": [
     "css"
   ],
@@ -9,7 +9,8 @@
   "minified:main": "./dist/blender-ui.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env NODE_ENV=development rollup -c",
+    "clean" : "rimraf ./dist/*",
+    "dev": "npm run clean && cross-env NODE_ENV=development rollup -c",
     "build": "npm run dev && cross-env NODE_ENV=production rollup -c"
   },
   "author": "Turkhan Badalov @Badalov97",
@@ -30,6 +31,7 @@
     "grunt-contrib-jasmine": "^1.1.0",
     "jasmine": "^3.1.0",
     "postcss-cssnext": "^3.1.0",
+    "rimraf": "^2.6.2",
     "rollup": "^0.57.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^9.1.0",
@@ -47,16 +49,5 @@
     "Safari >= 6.2",
     "IE >= 9",
     "IE 8"
-  ],
-  "npmFileMap": [
-    {
-      "basePath": "/dist/",
-      "files": [
-        "blender-ui.js",
-        "blender-ui.min.js",
-        "../assets/**/*.png",
-        "*.css"
-      ]
-    }
   ]
 }

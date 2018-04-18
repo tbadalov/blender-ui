@@ -10,6 +10,8 @@ const cssnext = require('postcss-cssnext');
 const cssnano = require('cssnano');
 //const buble = require('rollup-plugin-buble');
 
+const pkg = require('./package.json')
+
 
 const postcssPlugins = [cssnext()];
 if (isProd) {
@@ -34,10 +36,11 @@ const postcssConfig = {
 const defaultConfig = {
     input: 'src/blender-ui.js',
     output: {
-        file: `dist/blender-ui${isProd ? '.min' : ''}.js`,
+        file: `./dist/blender-ui${isProd ? '.min' : ''}.js`,
         format: 'umd',
-        name: 'blender-ui'
+        name: 'BlenderUI'
     },
+    banner: `/*! Blender-UI - v${pkg.version} */\n`,
     plugins: [
         postcss(postcssConfig),
         resolve(),
