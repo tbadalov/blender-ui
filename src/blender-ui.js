@@ -57,17 +57,26 @@ const BlenderUI = function (id, options = {}) {
         return viewport;
     }
 
-    var content = parent => parent.querySelector(`.${VIEWPORT_CONTENT_CLASS}`);
+    const content = parent => parent.querySelector(`.${VIEWPORT_CONTENT_CLASS}`);
 
     //Helper function copies all html content from one element to another
-    function copyContent(from, to) {
+    function copyHtmlContent(from, to) {
         to.innerHTML = from.innerHTML;
     }
 
     //Helper function _moves_ all html content from one element to another
     //It removes content from source element.
     function moveContent(from, to) {
-        copyContent(from, to);
+        let child = from.firstChild;
+        while (child !== null) {
+            const nextChild = child.nextSibling;
+            if (!isDOMElement(child)) {
+                child = nextChild;
+                continue;
+            }
+            to.appendChild(child);
+            child = nextChild;
+        }
         from.innerHTML = '';
     }
 
@@ -85,11 +94,11 @@ const BlenderUI = function (id, options = {}) {
         viewport.className = 'viewport';
         viewport.id = `v${numId}`;
 
-        const content = document.createElement('div');
-        content.className = VIEWPORT_CONTENT_CLASS;
+        const contentContainer = document.createElement('div');
+        contentContainer.className = VIEWPORT_CONTENT_CLASS;
 
         viewport.appendChild(handle());
-        viewport.appendChild(content);
+        viewport.appendChild(contentContainer);
         return viewport;
     }
 
@@ -312,8 +321,6 @@ const BlenderUI = function (id, options = {}) {
             return;
         }
 
-        console.log("merging");
-
         sizes.splice(sizePosition-(isHorizontal(direction) ? 0 : 1), 2, newSize);
         removeListeners(neighbor);
         parent.data.el.removeChild(neighbor.data.el);
@@ -355,7 +362,7 @@ const BlenderUI = function (id, options = {}) {
 
             toContainer(parent);
             moveContent(parentContent, leftContent);
-            copyContent(leftContent, rightContent);
+            copyHtmlContent(leftContent, rightContent);
             removeListeners(viewNode);
             parent.removeChild(parent.querySelector(`.${HANDLE_CLASS}`));
             parent.removeChild(parentContent);
@@ -380,7 +387,7 @@ const BlenderUI = function (id, options = {}) {
             if (newContent) {
                 const tmpContainer = document.createElement('div');
                 tmpContainer.appendChild(newContent);
-                copyContent(tmpContainer, rightContent);
+                copyHtmlContent(tmpContainer, rightContent);
             }
             return viewNode.children[0];
         }
@@ -418,7 +425,7 @@ const BlenderUI = function (id, options = {}) {
         //Copy content of splitted node to the new one and then add to DOM
         const leftContent = content(left);
         const rightContent = content(right);
-        copyContent(leftContent, rightContent);
+        copyHtmlContent(leftContent, rightContent);
 
         if (isH) domContainer.insertBefore(right, left.nextSibling);
         else domContainer.insertBefore(right, left);
@@ -445,7 +452,7 @@ const BlenderUI = function (id, options = {}) {
         if (newContent) {
             const tmpContainer = document.createElement('div');
             tmpContainer.appendChild(newContent);
-            copyContent(tmpContainer, rightContent);
+            copyHtmlContent(tmpContainer, rightContent);
         }
 
         return viewNode;
@@ -459,12 +466,17 @@ const BlenderUI = function (id, options = {}) {
     const minSize = getOption(options, 'minSize', 50);
     const handle = getOption(options, 'handle', defaultHandleFn);
     const viewport = getOption(options, 'viewport', defaultViewportFn);
+    const contentFn = getOption(options, 'content', DUMMY);
     const toContainer = getOption(options, 'viewportToContainer', defaultViewportToContainerFn);
     const events = getOption(options, 'events', {});
     const onSplit = getOption(events, 'onSplit', DUMMY);
     const onMerge = getOption(events, 'onMerge', DUMMY);
     const onCreate = getOption(events, 'onCreate', DUMMY);
     const rootElement = viewport(++nodeCounter);
+    const defaultContent = contentFn();
+    if (isDOMElement(defaultContent)) {
+        content(rootElement).appendChild(defaultContent);
+    }
     var last = null;
     //rootElement.className += ' split split-horizontal';
 

@@ -25,7 +25,6 @@ function node(children = [], data = {}) {
             }
         },
         addChild: function () {
-            console.log(arguments);
             if ( arguments.length === 0 )
                 return;
 

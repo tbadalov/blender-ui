@@ -1,6 +1,6 @@
 {
   "name": "blender-ui",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "description": "Liteweight library that simulates window partitioning in a browser like in Blender 3D modelling software",
   "keywords": [
     "css"
@@ -9,7 +9,7 @@
   "minified:main": "./dist/blender-ui.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean" : "rimraf ./dist/*",
+    "clean": "rimraf ./dist/*",
     "dev": "npm run clean && cross-env NODE_ENV=development rollup -c",
     "build": "npm run dev && cross-env NODE_ENV=production rollup -c"
   },
